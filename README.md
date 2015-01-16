@@ -1,5 +1,5 @@
 # data-structures
-Data structures examples from danielacton.com.
+Data structures examples from [danielacton.com](http://danielacton.com).
 
 ## Java examples
 - in the java directory
