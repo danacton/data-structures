@@ -16,7 +16,7 @@ public class LinkedListTest extends TestCase {
    * Test that the LinkedList is constructed. Result is a list with 0 elements.
    */
   public void testCreation() {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<Integer>();
     assertEquals(0, list.size());
   }
 
@@ -25,7 +25,7 @@ public class LinkedListTest extends TestCase {
    * element with a certain value
    */
   public void testCreationWithOneElement() {
-    LinkedList list = new LinkedList("a");
+    LinkedList<String> list = new LinkedList<String>("a");
     assertEquals(1, list.size());
     assertEquals("a", list.elementAt(0));
   }
@@ -35,7 +35,8 @@ public class LinkedListTest extends TestCase {
    * elements with certain values
    */
   public void testCreationWithManyElements() {
-    LinkedList list = new LinkedList(new Object[] { "a", "b", "c", "d" });
+    LinkedList<String> list = new LinkedList<String>(new String[] { "a", "b",
+        "c", "d" });
 
     assertEquals("a", list.elementAt(0));
     assertEquals("b", list.elementAt(1));
@@ -49,7 +50,7 @@ public class LinkedListTest extends TestCase {
    * with a certain value
    */
   public void testAddSingle() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
     list.add("a");
 
@@ -62,9 +63,9 @@ public class LinkedListTest extends TestCase {
    * with certain values
    */
   public void testAddMany() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z" });
 
     assertEquals("x", list.elementAt(0));
     assertEquals("y", list.elementAt(1));
@@ -78,9 +79,9 @@ public class LinkedListTest extends TestCase {
    * is a list moved "one to the left" with first item replaced
    */
   public void testRemoveSingleStart() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z" });
     list.remove("x");
 
     assertEquals("y", list.elementAt(0));
@@ -93,9 +94,9 @@ public class LinkedListTest extends TestCase {
    * is a list moved "one to the left" with item replaced
    */
   public void testRemoveSingleMiddle() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z" });
     list.remove("y");
 
     assertEquals("x", list.elementAt(0));
@@ -108,9 +109,9 @@ public class LinkedListTest extends TestCase {
    * is a list that is 1 element shorter
    */
   public void testRemoveSingleEnd() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z" });
     list.remove("z");
 
     assertEquals("x", list.elementAt(0));
@@ -122,10 +123,10 @@ public class LinkedListTest extends TestCase {
    * Test that removing all elements works Result is an empty list
    */
   public void testRemoveAll() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z" });
-    list.remove(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z" });
+    list.remove(new String[] { "x", "y", "z" });
 
     assertEquals(0, list.size());
   }
@@ -135,10 +136,10 @@ public class LinkedListTest extends TestCase {
    * a list moved "N to the left"
    */
   public void testRemoveManyFromBeginning() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z", "a", "b", "c" });
-    list.remove(new Object[] { "x", "y", "z" });
+    list.add(new String[] { "x", "y", "z", "a", "b", "c" });
+    list.remove(new String[] { "x", "y", "z" });
 
     assertEquals("a", list.elementAt(0));
     assertEquals("b", list.elementAt(1));
@@ -151,10 +152,10 @@ public class LinkedListTest extends TestCase {
    * list that is N elements shorter
    */
   public void testRemoveManyFromEnd() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z", "a", "b", "c" });
-    list.remove(new Object[] { "a", "b", "c" });
+    list.add(new String[] { "x", "y", "z", "a", "b", "c" });
+    list.remove(new String[] { "a", "b", "c" });
 
     assertEquals("x", list.elementAt(0));
     assertEquals("y", list.elementAt(1));
@@ -167,10 +168,10 @@ public class LinkedListTest extends TestCase {
    * list that is N elements shorter, keeping start and end bits
    */
   public void testRemoveManyFromInside() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z", "a", "b", "c" });
-    list.remove(new Object[] { "y", "z", "a", "b" });
+    list.add(new String[] { "x", "y", "z", "a", "b", "c" });
+    list.remove(new String[] { "y", "z", "a", "b" });
 
     assertEquals("x", list.elementAt(0));
     assertEquals("c", list.elementAt(1));
@@ -182,9 +183,9 @@ public class LinkedListTest extends TestCase {
    * the elements added
    */
   public void testIndexOf() {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<String>();
 
-    list.add(new Object[] { "x", "y", "z", "a", "b", "c" });
+    list.add(new String[] { "x", "y", "z", "a", "b", "c" });
 
     assertEquals(0, list.indexOf("x"));
     assertEquals(1, list.indexOf("y"));
@@ -199,10 +200,10 @@ public class LinkedListTest extends TestCase {
    * Concatenate lists A and B where A is empty Result is B
    */
   public void testConcatenationEmptyA() {
-    LinkedList listA = new LinkedList();
-    LinkedList listB = new LinkedList();
+    LinkedList<String> listA = new LinkedList<String>();
+    LinkedList<String> listB = new LinkedList<String>();
 
-    listB.add(new Object[] { "x", "y", "z", "a", "b", "c" });
+    listB.add(new String[] { "x", "y", "z", "a", "b", "c" });
 
     listA.concatenate(listB);
     assertEquals(0, listA.indexOf("x"));
@@ -218,10 +219,10 @@ public class LinkedListTest extends TestCase {
    * Concatenate lists A and B where B is empty Result is A
    */
   public void testConcatenationEmptyB() {
-    LinkedList listA = new LinkedList();
-    LinkedList listB = new LinkedList();
+    LinkedList<String> listA = new LinkedList<String>();
+    LinkedList<String> listB = new LinkedList<String>();
 
-    listA.add(new Object[] { "x", "y", "z", "a", "b", "c" });
+    listA.add(new String[] { "x", "y", "z", "a", "b", "c" });
 
     int i = listA.size();
 
@@ -240,14 +241,14 @@ public class LinkedListTest extends TestCase {
    * Concatenate lists A and B where neither is empty Result is A+B
    */
   public void testConcatenationABNonEmpty() {
-    LinkedList listA = new LinkedList();
-    LinkedList listB = new LinkedList();
+    LinkedList<String> listA = new LinkedList<String>();
+    LinkedList<String> listB = new LinkedList<String>();
 
-    listA.add(new Object[] { "x", "y", "z" });
+    listA.add(new String[] { "x", "y", "z" });
 
     int i = listA.size();
 
-    listB.add(new Object[] { "a", "b", "c" });
+    listB.add(new String[] { "a", "b", "c" });
 
     listA.concatenate(listB);
     assertEquals(0, listA.indexOf("x"));
@@ -264,8 +265,8 @@ public class LinkedListTest extends TestCase {
    * Concatenate lists A and B where both are empty Result is empty
    */
   public void testConcatenationABBothEmpty() {
-    LinkedList listA = new LinkedList();
-    LinkedList listB = new LinkedList();
+    LinkedList<String> listA = new LinkedList<String>();
+    LinkedList<String> listB = new LinkedList<String>();
 
     listA.concatenate(listB);
     assertEquals(0, listA.size());

@@ -1,21 +1,22 @@
 package com.danielacton.datastructures;
 
-public class Hashtable {
+public class Hashtable<K extends Comparable<K>, V extends Comparable<V>> {
   private final int tableSize = 20;
   private int numElements;
+
   private Object[] table;
 
   public Hashtable() {
-    this.table = new Object[this.tableSize];
     this.numElements = 0;
+    this.table = new Object[tableSize];
   }
 
-  public Hashtable(Object initialKey, Object initialData) {
+  public Hashtable(K initialKey, V initialData) {
     this();
     this.add(initialKey, initialData);
   }
 
-  public Hashtable(Object[] initialKeys, Object[] initialData) {
+  public Hashtable(K[] initialKeys, V[] initialData) {
     this();
 
     // Don't do stuff with differently sized input arrays
@@ -33,7 +34,8 @@ public class Hashtable {
    * @param key The key for the data.
    * @param data The data to store.
    */
-  public void add(Object key, Object data) {
+  @SuppressWarnings("unchecked")
+  public void add(K key, V data) {
     if (data == null || key == null) {
       System.err.println("ERROR: Either the key or the data are null");
       return;
@@ -44,16 +46,17 @@ public class Hashtable {
       return;
     }
 
-    /* Find out where in our array should the item go */
+    /* Find out where in our array the item should go */
     int position = this.hash(key);
 
     /* If nothing exists in the position, create a new linked list there */
     if (this.table[position] == null) {
-      this.table[position] = new LinkedList();
+      this.table[position] = new LinkedList<HashtableNode<K, V>>();
     }
 
     /* Add to the linked list in the appropriate position */
-    ((LinkedList) this.table[position]).add(new HashtableNode(key, data));
+    LinkedList<HashtableNode<K, V>> list = (LinkedList<HashtableNode<K, V>>) this.table[position];
+    list.add(new HashtableNode<K, V>(key, data));
     this.numElements++;
   }
 
@@ -66,7 +69,7 @@ public class Hashtable {
    * @param keys The keys for the data.
    * @param inputData The data to add.
    */
-  public void add(Object[] keys, Object[] inputData) {
+  public void add(K[] keys, V[] inputData) {
     for (int i = 0; i < inputData.length; i++) {
       this.add(keys[i], inputData[i]);
     }
@@ -77,15 +80,17 @@ public class Hashtable {
    * 
    * @param key The item to remove
    */
-  public void remove(Object key) {
+  @SuppressWarnings("unchecked")
+  public void remove(K key) {
     int hashVal = this.hash(key);
+    LinkedList<HashtableNode<K, V>> list = (LinkedList<HashtableNode<K, V>>) this.table[hashVal];
 
-    if (this.table[hashVal] != null) {
-      HashtableNode node = new HashtableNode();
+    if (list != null) {
+      HashtableNode<K, V> node = new HashtableNode<K, V>();
       node.setKey(key);
 
-      if (((LinkedList) this.table[hashVal]).indexOf(node) > -1) {
-        ((LinkedList) this.table[hashVal]).remove(node);
+      if (list.indexOf(node) > -1) {
+        list.remove(node);
         this.numElements--;
       }
     }
@@ -96,7 +101,7 @@ public class Hashtable {
    * 
    * @param inputData The array of items to remove.
    */
-  public void remove(Object[] keys) {
+  public void remove(K[] keys) {
     for (int i = 0; i < keys.length; i++) {
       this.remove(keys[i]);
     }
@@ -111,7 +116,7 @@ public class Hashtable {
    * @return The hash, an integer to be used for the data's position in the
    *         backing array.
    */
-  private int hash(Object key) {
+  private int hash(K key) {
 
     // Start with a base, just so that it's not 0 for empty strings
     int result = 42;
@@ -148,7 +153,7 @@ public class Hashtable {
 
     for (int i = 0; i < this.table.length; i++) {
       if (this.table[i] != null) {
-        buffer.append("\t" + (LinkedList) this.table[i]);
+        buffer.append("\t" + this.table[i]);
         buffer.append(System.getProperty("line.separator"));
       }
     }
@@ -173,14 +178,17 @@ public class Hashtable {
    * @param data The data to search for.
    * @return Whether or not the element exists.
    */
-  public boolean contains(Object key) {
+  @SuppressWarnings("unchecked")
+  public boolean contains(K key) {
     boolean result = false;
     int hash = this.hash(key);
 
-    if (this.table[hash] != null) {
-      HashtableNode node = new HashtableNode();
+    LinkedList<HashtableNode<K, V>> list = (LinkedList<HashtableNode<K, V>>) this.table[hash];
+
+    if (list != null) {
+      HashtableNode<K, V> node = new HashtableNode<K, V>();
       node.setKey(key);
-      if (((LinkedList) this.table[hash]).indexOf(node) > -1) {
+      if (list.indexOf(node) > -1) {
         result = true;
       }
     }
@@ -190,38 +198,39 @@ public class Hashtable {
 
   /**
    * An inner class to represent an entry in the Hashtable. Bascially just holds
-   * the key/data pair.
+   * the key/data pair. This is here because we need to keep the key as well as
+   * the data so that we can address a particular entry in the hashtable rather
+   * than just a particular entry in the backing array.
    * 
-   * @author Daniel Acton (code@danielacton.com)
-   *
    */
-  private class HashtableNode {
-    private Object key;
-    private Object data;
+  private class HashtableNode<A extends Comparable<A>, B extends Comparable<B>>
+      implements Comparable<HashtableNode<A, B>> {
+    private A key;
+    private B data;
 
     public HashtableNode() {
       this.key = null;
       this.data = null;
     }
 
-    public HashtableNode(Object inKey, Object inData) {
-      this.key = inKey;
-      this.data = inData;
-    }
-
-    public Object getData() {
-      return data;
-    }
-
-    public void setData(Object data) {
+    public HashtableNode(A key, B data) {
+      this.key = key;
       this.data = data;
     }
 
-    public Object getKey() {
+    public B getData() {
+      return data;
+    }
+
+    public void setData(B data) {
+      this.data = data;
+    }
+
+    public A getKey() {
       return key;
     }
 
-    public void setKey(Object key) {
+    public void setKey(A key) {
       this.key = key;
     }
 
@@ -229,9 +238,10 @@ public class Hashtable {
      * Equality can be based on key alone because there can't be 2 nodes with
      * the same key in the table
      */
+    @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
       if (obj instanceof HashtableNode) {
-        HashtableNode node = (HashtableNode) obj;
+        HashtableNode<A, B> node = (HashtableNode<A, B>) obj;
         return this.key.equals(node.getKey());
       } else {
         return false;
@@ -240,6 +250,15 @@ public class Hashtable {
 
     public String toString() {
       return "Key: [" + this.key + "] data: [" + this.data + "]";
+    }
+
+    @Override
+    public int compareTo(Hashtable<K, V>.HashtableNode<A, B> other) {
+      if (this.key != null) {
+        return this.key.compareTo(other.getKey());
+      } else {
+        return 1;
+      }
     }
   }
 }

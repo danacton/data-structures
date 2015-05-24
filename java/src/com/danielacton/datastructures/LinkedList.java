@@ -7,17 +7,17 @@ package com.danielacton.datastructures;
  * @author Daniel Acton (code@danielacton.com)
  *
  */
-public class LinkedList {
+public class LinkedList<T extends Comparable<T>> {
 
-  private ListNode firstNode;
-  private ListNode lastNode;
+  private ListNode<T> firstNode;
+  private ListNode<T> lastNode;
   private int size;
 
   /**
    * For the no-args constructor, the data and next will be null (empty list)
    */
   public LinkedList() {
-    this.firstNode = new ListNode();
+    this.firstNode = new ListNode<T>();
     this.lastNode = this.firstNode;
     this.size = 0;
   }
@@ -27,7 +27,7 @@ public class LinkedList {
    * 
    * @param inputData The item to start the list off with
    */
-  public LinkedList(Object inputData) {
+  public LinkedList(T inputData) {
     this();
     this.add(inputData);
   }
@@ -37,7 +37,7 @@ public class LinkedList {
    * 
    * @param inputList the nodes to start with
    */
-  public LinkedList(Object[] inputList) {
+  public LinkedList(T[] inputList) {
     this();
 
     if (inputList.length > 0) {
@@ -53,7 +53,7 @@ public class LinkedList {
    * @return A string representation of the list's contents.
    */
   public String toString() {
-    ListNode currentNode = this.firstNode;
+    ListNode<T> currentNode = this.firstNode;
 
     StringBuffer buffer = new StringBuffer();
 
@@ -76,8 +76,8 @@ public class LinkedList {
    * 
    * @param inputData The data for the node
    */
-  public void add(Object inputData) {
-    ListNode node = new ListNode(inputData);
+  public void add(T inputData) {
+    ListNode<T> node = new ListNode<T>(inputData);
 
     // Make sure we cater for the case where the list is empty
     if (this.firstNode.getData() == null) {
@@ -96,7 +96,7 @@ public class LinkedList {
    * 
    * @param inputArray The nodes to add
    */
-  public void add(Object[] inputArray) {
+  public void add(T[] inputArray) {
     for (int i = 0; i < inputArray.length; i++) {
       this.add(inputArray[i]);
     }
@@ -110,8 +110,8 @@ public class LinkedList {
    * @return The position (starts at 0) of the element in the list, -1 if not
    *         found.
    */
-  public int indexOf(Object inputData) {
-    ListNode currentNode = this.firstNode;
+  public int indexOf(T inputData) {
+    ListNode<T> currentNode = this.firstNode;
     int position = 0;
     boolean found = false;
 
@@ -151,8 +151,8 @@ public class LinkedList {
    * 
    * @param inputData The element to remove.
    */
-  public void remove(Object inputData) {
-    ListNode currentNode = this.firstNode;
+  public void remove(T inputData) {
+    ListNode<T> currentNode = this.firstNode;
 
     if (this.size == 0) {
       return;
@@ -166,7 +166,7 @@ public class LinkedList {
       // Only one node in list, be careful!
       if (currentNode.getNext() == null) {
         this.firstNode.setData(null);
-        this.firstNode = new ListNode();
+        this.firstNode = new ListNode<T>();
         this.lastNode = this.firstNode;
         this.size--;
         return;
@@ -187,12 +187,12 @@ public class LinkedList {
       }
 
       // Check if the data of the next is what we're looking for
-      ListNode nextNode = currentNode.getNext();
+      ListNode<T> nextNode = currentNode.getNext();
       if (nextNode != null) {
         if (inputData.equals(nextNode.getData())) {
 
           // Found the right one, loop around the node
-          ListNode nextNextNode = nextNode.getNext();
+          ListNode<T> nextNextNode = nextNode.getNext();
           currentNode.setNext(nextNextNode);
 
           nextNode = null;
@@ -215,7 +215,7 @@ public class LinkedList {
    * 
    * @param inputArray The items to remove from the list
    */
-  public void remove(Object[] inputArray) {
+  public void remove(T[] inputArray) {
     for (int i = 0; i < inputArray.length; i++) {
       this.remove(inputArray[i]);
     }
@@ -228,13 +228,13 @@ public class LinkedList {
    * @param inputPosition The position of the element
    * @return The element in the given position
    */
-  public Object elementAt(int inputPosition) {
+  public T elementAt(int inputPosition) {
 
     if (inputPosition >= this.size || inputPosition < 0) {
       return null;
     }
 
-    ListNode currentNode = this.firstNode;
+    ListNode<T> currentNode = this.firstNode;
 
     for (int position = 0; position < inputPosition; position++) {
       currentNode = currentNode.getNext();
@@ -249,7 +249,7 @@ public class LinkedList {
    * 
    * @param list The list to append
    */
-  public void concatenate(LinkedList list) {
+  public void concatenate(LinkedList<T> list) {
     if (this.size == 0) {
       this.firstNode = list.firstNode;
     }
@@ -264,34 +264,34 @@ public class LinkedList {
    * @author Daniel Acton (code@danielacton.com)
    *
    */
-  private class ListNode {
+  private class ListNode<E extends Comparable<E>> {
 
-    private Object data;
-    private ListNode next;
+    private E data;
+    private ListNode<E> next;
 
     public ListNode() {
       this.data = null;
       this.next = null;
     }
 
-    public ListNode(Object inputData) {
+    public ListNode(E inputData) {
       this.data = inputData;
       this.next = null;
     }
 
-    public Object getData() {
+    public E getData() {
       return data;
     }
 
-    public void setData(Object data) {
+    public void setData(E data) {
       this.data = data;
     }
 
-    public ListNode getNext() {
+    public ListNode<E> getNext() {
       return next;
     }
 
-    public void setNext(ListNode next) {
+    public void setNext(ListNode<E> next) {
       this.next = next;
     }
 
